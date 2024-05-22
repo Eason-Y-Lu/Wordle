@@ -15,6 +15,7 @@ public class Wordle {
 
     private WordleGWindow gw;
     private String wordChoice;
+    private int row;
 
     /*
      * Called when the user hits the RETURN key or clicks the ENTER button,
@@ -41,18 +42,20 @@ public class Wordle {
     /* Private instance variables */
 
     public void enterAction(String s) {
+        row = gw.getCurrentRow();
         s = s.toLowerCase();
         if (Arrays.asList(WordleDictionary.FIVE_LETTER_WORDS).contains(s)) {
             char[] correctLetters = wordChoice.toCharArray();
             char[] answerLetters = s.toCharArray();
             for (int i = 0; i < 5; i++) {
                 if (answerLetters[i] == correctLetters[i]) {
-                    gw.setSquareColor(0, i, WordleGWindow.CORRECT_COLOR);
+                    gw.setSquareColor(row, i, WordleGWindow.CORRECT_COLOR);
                 } else if (wordChoice.indexOf(answerLetters[i]) != -1) {
-                    gw.setSquareColor(0, i, WordleGWindow.PRESENT_COLOR);
+                    gw.setSquareColor(row, i, WordleGWindow.PRESENT_COLOR);
                 } else {
-                    gw.setSquareColor(0, i, WordleGWindow.MISSING_COLOR);
+                    gw.setSquareColor(row, i, WordleGWindow.MISSING_COLOR);
                 }
+                gw.setCurrentRow(row+1);
             }
         } else {
             gw.showMessage("Not in word list.");
