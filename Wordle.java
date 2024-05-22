@@ -42,6 +42,7 @@ public class Wordle {
     /* Private instance variables */
 
     public void enterAction(String s) {
+        boolean win = false;
         row = gw.getCurrentRow();
         s = s.toLowerCase();
         if (Arrays.asList(WordleDictionary.FIVE_LETTER_WORDS).contains(s)) {
@@ -54,8 +55,13 @@ public class Wordle {
                     gw.setSquareColor(row, i, WordleGWindow.PRESENT_COLOR);
                 } else {
                     gw.setSquareColor(row, i, WordleGWindow.MISSING_COLOR);
+                    gw.setKeyColor(Character.toString(answerLetters[i]).toUpperCase(), WordleGWindow.MISSING_COLOR);
                 }
-                gw.setCurrentRow(row+1);
+            }
+            if (row < 6) {
+                gw.setCurrentRow(row + 1);
+            } else {
+                gw.showMessage("The correct word is:" + wordChoice);
             }
         } else {
             gw.showMessage("Not in word list.");
