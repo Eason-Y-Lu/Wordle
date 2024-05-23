@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class Wordle {
 
+    private static String wordChoice;
     private WordleGWindow gw;
-    private String wordChoice;
     private int row;
 
     /*
@@ -28,6 +28,19 @@ public class Wordle {
 
     /* Startup code */
 
+    private static boolean checkWin(String s) {
+        char[] answer = s.toCharArray();
+        char[] correct = wordChoice.toCharArray();
+        for (int i = 0; i < 5; i++) {
+            if (answer[i] != correct[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /* Private instance variables */
+
     public void run() {
         gw = new WordleGWindow();
         gw.addEnterListener((s) -> enterAction(s));
@@ -38,8 +51,6 @@ public class Wordle {
             gw.setSquareLetter(0, i, String.valueOf(wordChoice.charAt(i)));
         }*/
     }
-
-    /* Private instance variables */
 
     public void enterAction(String s) {
         boolean win = false;
@@ -58,7 +69,9 @@ public class Wordle {
                     gw.setKeyColor(Character.toString(answerLetters[i]).toUpperCase(), WordleGWindow.MISSING_COLOR);
                 }
             }
-            if (row < 6) {
+            if (checkWin(s)) {
+                gw.showMessage("You Win. :-), it only took " + (row + 1) + " tries.");
+            } else if (row < 6) {
                 gw.setCurrentRow(row + 1);
             } else {
                 gw.showMessage("The correct word is:" + wordChoice);
@@ -67,5 +80,4 @@ public class Wordle {
             gw.showMessage("Not in word list.");
         }
     }
-
 }
